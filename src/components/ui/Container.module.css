@@ -1,0 +1,11 @@
+.container {
+  width: 100%;
+  max-width: calc(var(--container-max) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Narrow: for long reading text inside case studies */
+.narrow {
+  max-width: calc(46rem + var(--gutter) * 2);
+}

@@ -1,0 +1,144 @@
+/* Shared by every frame: opening a screen full size */
+.opener {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  cursor: zoom-in;
+  transition:
+    transform 450ms var(--ease-out),
+    box-shadow 450ms var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .opener:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* ---------- Browser window ---------- */
+.browser {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 10px;
+  background: var(--color-surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: clamp(20px, 2.2vw, 30px);
+  padding-inline: clamp(8px, 1vw, 14px);
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+}
+
+.dots i {
+  width: clamp(5px, 0.55vw, 8px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-line-strong);
+}
+
+/* A blank address bar: product web addresses are not shown on the site */
+.address {
+  flex: 0 1 38%;
+  height: 45%;
+  margin-inline: auto;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-raised);
+}
+
+.viewport {
+  display: block;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* ---------- Phone ---------- */
+/* Sizes follow the phone's own width (container units), so it looks right at any size */
+.phone {
+  container-type: inline-size;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border-radius: 14cqi;
+}
+
+.phoneBody {
+  display: block;
+  padding: 3.2cqi;
+  border-radius: 14cqi;
+  background: #121317;
+  box-shadow:
+    0 0 0 1px var(--color-line-strong),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    var(--shadow-md);
+}
+
+.phoneScreen {
+  position: relative;
+  display: block;
+  aspect-ratio: 393 / 852;
+  border-radius: 11cqi;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* ---------- Detail card: a cropped part of a screen ---------- */
+.detail {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-md);
+  background: #fff;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.detailWindow {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.cropImage {
+  position: absolute;
+  max-width: none;
+  height: auto;
+}
+
+/* ---------- Plain card (diagrams, strips) ---------- */
+.plain {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: #fff;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.plain .image {
+  height: auto;
+}

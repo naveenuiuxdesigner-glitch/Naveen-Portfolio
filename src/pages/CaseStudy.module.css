@@ -1,0 +1,183 @@
+.page {
+  display: grid;
+  gap: var(--space-7);
+  padding-block: var(--space-6) 0;
+}
+
+.top {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  min-height: 44px;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.back svg {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .back:hover svg {
+    transform: translateX(-3px);
+  }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.label {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.title {
+  font-size: var(--text-display);
+  line-height: 0.98;
+}
+
+/* The title rises out of a mask on load */
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.maskInner {
+  display: inline-block;
+}
+
+/* Industry · product type · platform */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.meta li:not(:last-child)::after {
+  content: "·";
+  margin-inline: var(--space-3);
+  color: var(--color-accent);
+}
+
+.tagline {
+  max-width: 40ch;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-5);
+  margin-top: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+
+@media (min-width: 768px) {
+  .facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.facts div {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+}
+
+.facts dt {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.facts dd {
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--grid-gap);
+    align-items: end;
+  }
+
+  .label,
+  .title,
+  .meta {
+    grid-column: 1 / -1;
+  }
+
+  .tagline {
+    grid-column: 1;
+    font-size: var(--text-xl);
+    line-height: 1.4;
+  }
+
+  .facts {
+    grid-column: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+  }
+}
+
+.heroVisual {
+  width: 100%;
+}
+
+/* ---------- The story, with the sticky section list beside it on laptops ---------- */
+.body {
+  display: grid;
+  gap: var(--space-7);
+  padding-block: var(--space-section) 0;
+}
+
+.parts {
+  display: grid;
+  gap: var(--space-section);
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .body {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+}
+
+@media (min-width: 1440px) {
+  .body {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+}

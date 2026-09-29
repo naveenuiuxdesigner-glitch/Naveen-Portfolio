@@ -1,0 +1,248 @@
+.hero {
+  position: relative;
+  padding-block: var(--space-7) var(--space-7);
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  gap: var(--space-7);
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-4);
+  align-content: center;
+}
+
+/* Open to opportunities: a small live indicator */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent-fill);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-accent-fill);
+    animation: pulse 2.4s var(--ease-out) infinite;
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.name {
+  font-size: var(--text-display);
+  line-height: 0.98;
+  margin-top: var(--space-1);
+}
+
+/* Each word rises out of its own mask on load */
+.word {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  vertical-align: top;
+}
+
+.wordInner {
+  display: inline-block;
+}
+
+/* Senior UI/UX & Product Designer */
+.role {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+  line-height: 1.25;
+  letter-spacing: var(--tracking-heading);
+  color: var(--color-text);
+}
+
+.thesis {
+  max-width: 34ch;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-label);
+  font-size: var(--text-sm);
+  color: var(--color-text-subtle);
+}
+
+.facts li:not(:last-child)::after {
+  content: "/";
+  margin-inline: var(--space-3);
+  color: var(--color-line-strong);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+/* The kinds of products, along the bottom of the hero */
+.domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-5) 0 0;
+  list-style: none;
+  border-top: 1px solid var(--color-line);
+}
+
+.domains li {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding-block: var(--space-8) var(--space-7);
+  }
+
+  .stage {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    column-gap: var(--space-7);
+    row-gap: var(--space-7);
+  }
+
+  .domains {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- Cursor spotlight (mouse only, see usePointerVars) ---------- */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    520px circle at var(--mx, 50%) var(--my, 30%),
+    color-mix(in srgb, var(--color-accent-fill) 6%, transparent),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+
+.hero[data-pointer] .spotlight {
+  opacity: 1;
+}
+
+/* ---------- Three real screens, laid out like a desk of work ---------- */
+/* Positions are in % of the showcase, so the composition scales from phone to desktop */
+.showcase {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  width: 100%;
+  max-width: 40rem;
+  justify-self: center;
+}
+
+.card {
+  position: absolute;
+}
+
+.cardBack {
+  top: 0;
+  right: 0;
+  width: 80%;
+}
+
+.cardLow {
+  top: 42%;
+  left: 0;
+  width: 60%;
+}
+
+.cardFront {
+  top: 16%;
+  right: 6%;
+  width: 25%;
+}
+
+/* Drifts a few px with the cursor. Nearer cards (bigger --depth) drift more. */
+.parallax {
+  transform: translate3d(calc(var(--px, 0) * var(--depth, 0px)), calc(var(--py, 0) * var(--depth, 0px)), 0);
+  transition: transform 900ms var(--ease-out);
+}
+
+.cardLink {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.cardScreen {
+  display: block;
+  transition: transform 450ms var(--ease-out);
+}
+
+/* The screens are pictures here; the whole card is the link */
+.cardScreen > * {
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .cardLink:hover .cardScreen {
+    transform: translateY(-6px);
+  }
+
+}
+
+.cardLink:focus-visible {
+  outline-offset: 6px;
+  border-radius: var(--radius-md);
+}
+
+.showcaseCaption {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--space-5) * -1);
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+}

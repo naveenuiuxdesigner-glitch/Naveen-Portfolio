@@ -1,0 +1,278 @@
+.visual {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+/* The quiet "desk" the product sits on: a soft panel with a faint dot grid */
+.canvas .stage {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(color-mix(in srgb, var(--color-text) 9%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px,
+    var(--color-canvas);
+  padding: clamp(var(--space-4), 4vw, var(--space-8));
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  min-width: 0;
+}
+
+/* ---------- One browser ---------- */
+.browser {
+  max-width: 64rem;
+  margin-inline: auto;
+}
+
+/* ---------- Two browsers, overlapping ---------- */
+.browsers {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .browsers {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .back {
+    grid-column: 1 / span 9;
+    grid-row: 1;
+  }
+
+  .front {
+    grid-column: 5 / -1;
+    grid-row: 1;
+    align-self: end;
+    margin-top: 22%;
+    z-index: 1;
+  }
+}
+
+/* ---------- Phones ---------- */
+.phones {
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+  gap: clamp(var(--space-3), 3vw, var(--space-7));
+  max-width: calc(var(--count) * 15rem);
+  margin-inline: auto;
+  align-items: start;
+}
+
+/* Every other phone sits a little higher, like devices laid out on a desk */
+.phoneSlot:nth-child(even) {
+  transform: translateY(calc(clamp(var(--space-4), 3vw, var(--space-7)) * -1));
+}
+
+.is-phones .stage {
+  padding-top: clamp(var(--space-6), 6vw, var(--space-9));
+}
+
+/* ---------- One phone, optionally with a detail beside it ---------- */
+.single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(var(--space-4), 5vw, var(--space-9));
+}
+
+.singlePhone {
+  width: min(16rem, 46%);
+  flex: none;
+}
+
+.phoneDetail {
+  width: min(22rem, 46%);
+}
+
+/* ---------- Desktop screen with a floating, magnified detail ---------- */
+.detailWrap {
+  position: relative;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-bottom: 4%;
+}
+
+.detailBase {
+  width: 72%;
+}
+
+.detailFloat {
+  position: relative;
+  width: var(--float-w, 60%);
+  margin: -18% 0 0 auto;
+  z-index: 1;
+}
+
+@media (max-width: 639px) {
+  .detailBase {
+    width: 88%;
+  }
+
+  .detailFloat {
+    width: 96%;
+    margin-top: -10%;
+  }
+}
+
+/* ---------- A flow, step by step ---------- */
+.sequence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6) var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 900px) {
+  .sequence {
+    grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  /* A hairline joins the steps, with a small arrowhead into the next one */
+  .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 0.65em;
+    left: calc(100% - var(--space-2));
+    width: calc(var(--space-5) + var(--space-4));
+    height: 1px;
+    background: var(--color-accent-line);
+  }
+}
+
+/* Desktop flows: two per row at most, they need the width */
+.sequenceWide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .sequenceWide {
+    grid-template-columns: repeat(min(var(--count), 2), minmax(0, 1fr));
+  }
+
+  .sequenceWide .step:nth-child(2n)::after {
+    display: none;
+  }
+}
+
+.step {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  min-width: 0;
+}
+
+.stepLabel {
+  display: flex;
+  gap: var(--space-2);
+  min-height: 2.6em;
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  color: var(--color-text-muted);
+}
+
+.stepNumber {
+  color: var(--color-accent);
+}
+
+/* ---------- Wide strips, stacked ---------- */
+.stack {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 64rem;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .stackItem:nth-child(2) {
+    margin-left: 6%;
+  }
+
+  .stackItem:nth-child(3) {
+    margin-left: 12%;
+  }
+}
+
+.plainWrap {
+  max-width: 60rem;
+  margin-inline: auto;
+}
+
+/* ---------- Tiny labels under a visual ---------- */
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3) var(--space-5);
+}
+
+.caption {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+}
+
+.annotations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.annotations li {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.annotations span {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent);
+}
+
+/* ---------- Work-list version: fills its card ---------- */
+.compact {
+  height: 100%;
+}
+
+.compact .stage {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 0;
+}
+
+.compact .browser,
+.compact .browsers,
+.compact .detailWrap {
+  width: 100%;
+}
+
+.compact.is-browser .stage {
+  align-items: flex-start;
+  padding-bottom: 0;
+}
+
+.compact.is-browser .browser {
+  margin-bottom: -12%;
+}
+
+.compact .phones {
+  width: 100%;
+  max-width: min(calc(var(--count) * var(--phone-max, 12rem)), 100%);
+}

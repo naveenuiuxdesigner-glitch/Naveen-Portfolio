@@ -1,0 +1,35 @@
+.section {
+  padding-block: var(--space-section);
+}
+
+/* Two plain sections in a row share one gap instead of stacking bottom + top padding */
+.section:not(.raised) + .section:not(.raised) {
+  padding-top: 0;
+  scroll-margin-top: var(--space-6); /* Menu jumps still land with room under the header */
+}
+
+.section:focus {
+  outline: none;
+}
+
+.raised {
+  background: var(--color-bg-raised);
+  border-block: 1px solid var(--color-line);
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-5);
+}
+
+.aside {
+  flex-shrink: 0;
+}

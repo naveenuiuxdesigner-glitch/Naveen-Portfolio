@@ -1,0 +1,88 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px; /* Comfortable tap target */
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+
+.icon {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .button:hover .icon {
+    transform: translate(2px, -2px);
+  }
+}
+
+.primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+@media (hover: hover) {
+  .primary:hover {
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent);
+  }
+}
+
+.secondary {
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-text);
+}
+
+@media (hover: hover) {
+  .secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}
+
+.text {
+  min-height: auto;
+  padding: var(--space-1) 0;
+  border-radius: 0;
+  color: var(--color-text);
+}
+
+@media (hover: hover) {
+  .text:hover {
+    color: var(--color-accent);
+  }
+}
+
+/* Magnetic buttons lean toward the cursor (see useMagnetic). Movement comes from CSS variables. */
+.button {
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    transform 400ms var(--ease-out),
+    scale var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .primary:hover {
+    box-shadow: 0 8px 24px -12px var(--color-accent-line);
+  }
+}
+
+.button:active {
+  scale: 0.97;
+}

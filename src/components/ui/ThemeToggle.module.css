@@ -1,0 +1,40 @@
+.toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .toggle:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent-line);
+    background: var(--color-accent-soft);
+  }
+}
+
+/* Both icons sit in the same spot; the inactive one turns away and fades */
+.icons {
+  display: grid;
+}
+
+.icons > * {
+  grid-area: 1 / 1;
+  transition:
+    transform var(--duration-slow) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
+}
+
+/* In the dark theme, show the sun (switch to light); in the light theme, the moon */
+[data-theme-icon="dark"] .moon,
+[data-theme-icon="light"] .sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}

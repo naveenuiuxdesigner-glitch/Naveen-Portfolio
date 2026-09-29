@@ -1,0 +1,187 @@
+/*
+  Design tokens
+  -------------
+  Every color, font, size, space and timing used on the site lives here.
+  Think of this file as the "Variables" panel in Figma: change a value
+  here and it updates everywhere.
+*/
+
+:root {
+  /* ---------- Typography ---------- */
+  /* Two families: Plus Jakarta Sans for headings, Inter for everything else (body, UI, labels) */
+  --font-display: "Plus Jakarta Sans", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-label: var(--font-body); /* Labels, metadata, numbers */
+
+  /*
+    Type scale. clamp(min, fluid, max) grows smoothly from phone to large desktop.
+      display  hero name, case-study title
+      3xl      page titles, closing CTAs
+      2xl      section headings, featured project titles
+      xl       project titles, sub-headings
+      lg       lead / intro text
+      base     body text
+      sm       supporting text, buttons, navigation
+      xs       labels and metadata
+  */
+  --text-xs: 0.75rem;                                        /* 12px */
+  --text-sm: 0.875rem;                                       /* 14px */
+  --text-base: clamp(1rem, 0.96rem + 0.15vw, 1.0625rem);     /* 16→17px */
+  --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);      /* 18→20px */
+  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);       /* 20→26px */
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);        /* 28→40px */
+  --text-3xl: clamp(2.125rem, 1.5rem + 2.6vw, 3.5rem);       /* 34→56px */
+  --text-display: clamp(2.5rem, 1.6rem + 4vw, 5.5rem);       /* 40→88px */
+
+  --leading-tight: 1.05;
+  --leading-snug: 1.2;
+  --leading-body: 1.6;
+
+  --tracking-display: -0.03em;
+  --tracking-heading: -0.02em;
+  --tracking-label: 0.08em;
+
+  /* Three weights only: nothing on the site goes heavier than semibold */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  --measure: 62ch; /* Comfortable reading line length */
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-1: 0.25rem;  /* 4  */
+  --space-2: 0.5rem;   /* 8  */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+  --space-9: 6rem;     /* 96 */
+  --space-10: 8rem;    /* 128 */
+
+  /* Space between big page sections: 48px on phones → 80px on large screens */
+  --space-section: clamp(3rem, 2rem + 3vw, 5rem);
+
+  /* ---------- Layout ---------- */
+  --container-max: 1360px;                       /* Content never gets wider than this */
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);   /* Side padding: 16px → 48px */
+  --grid-columns: 12;
+  --grid-gap: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  --header-height: 4.5rem;
+
+  /*
+    Breakpoints (for reference — CSS can't use variables inside @media,
+    so components write these numbers directly):
+      Mobile        < 640px
+      Tablet        640px – 1023px
+      Laptop        1024px – 1439px
+      Large desktop ≥ 1440px
+  */
+
+  /* ---------- Shape ---------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* ---------- Motion ---------- */
+  /* Mirrored in src/lib/motion.js for animations written in JavaScript */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);   /* Quick start, gentle stop */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;   /* Hover colors */
+  --duration-base: 250ms;   /* Hover movement, menus */
+  --duration-slow: 400ms;   /* Scroll reveals */
+  --duration-slower: 700ms; /* Page-load sequence */
+
+  /* ---------- Layers ---------- */
+  --z-header: 100;
+  --z-menu: 200;
+  --z-skip: 300;
+
+}
+
+/* Visitors who ask their device to reduce motion get near-instant changes */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+  }
+}
+
+/*
+  Two themes, each designed on its own (not an inverted copy).
+  The site picks one before the page paints: the visitor's saved choice, or their device setting
+  on a first visit (see the small script in index.html). The toggle in the header switches them.
+  Both themes share one accent: warm amber. Every text color passes WCAG AA on its background.
+*/
+
+/* ---------- Dark theme (default) ---------- */
+:root,
+[data-theme="dark"] {
+  /* Backgrounds, from deepest to most raised. Graphite with a cool bias, never pure black. */
+  --color-bg: #0e0f12;
+  --color-bg-raised: #131519;   /* Bands such as the footer */
+  --color-surface: #17191e;     /* Cards and frames around product screens */
+  --color-surface-hover: #1d2026;
+  --color-canvas: #121418;      /* The "desk" behind a product mockup */
+
+  /* Lines */
+  --color-line: #25282f;
+  --color-line-strong: #383c45;
+
+  /* Text */
+  --color-text: #eeede8;        /* 16:1 */
+  --color-text-muted: #a3a7af;  /* 8:1 */
+  --color-text-subtle: #868b95; /* 5.6:1 */
+
+  /* The one accent: warm amber */
+  --color-accent: #f2a44b;      /* Text, indicators — 9.3:1 */
+  --color-accent-fill: #f2a44b; /* Filled accents (buttons, chips) */
+  --color-on-accent: #16120c;   /* Text on a filled accent */
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  --color-accent-line: color-mix(in srgb, var(--color-accent) 50%, transparent);
+
+  /* Depth */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 18px 40px -20px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 40px 80px -36px rgba(0, 0, 0, 0.85);
+  --glow-strength: 8%;          /* Cursor light on cards */
+  --header-bg: color-mix(in srgb, var(--color-bg) 78%, transparent);
+
+  color-scheme: dark;
+}
+
+/* ---------- Light theme ---------- */
+[data-theme="light"] {
+  /* Warm paper, not white: calm and editorial */
+  --color-bg: #f4f2ee;
+  --color-bg-raised: #ece9e3;
+  --color-surface: #fbfaf8;
+  --color-surface-hover: #ffffff;
+  --color-canvas: #e9e6e0;
+
+  --color-line: #dedad2;
+  --color-line-strong: #c8c3b9;
+
+  --color-text: #17181b;        /* 16:1 */
+  --color-text-muted: #4d5058;  /* 7.4:1 */
+  --color-text-subtle: #676a72; /* 5:1 */
+
+  /* The same amber, deepened so it reads as text on paper */
+  --color-accent: #a85a06;      /* 5.2:1 */
+  --color-accent-fill: #e8952f;
+  --color-on-accent: #16120c;
+  --color-accent-soft: color-mix(in srgb, var(--color-accent-fill) 16%, transparent);
+  --color-accent-line: color-mix(in srgb, var(--color-accent) 45%, transparent);
+
+  --shadow-sm: 0 1px 2px rgba(40, 32, 20, 0.08);
+  --shadow-md: 0 18px 40px -22px rgba(40, 32, 20, 0.28);
+  --shadow-lg: 0 40px 80px -40px rgba(40, 32, 20, 0.35);
+  --glow-strength: 14%;
+  --header-bg: color-mix(in srgb, var(--color-bg) 82%, transparent);
+
+  color-scheme: light;
+}

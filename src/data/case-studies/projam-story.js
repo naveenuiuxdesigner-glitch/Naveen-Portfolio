@@ -1,0 +1,155 @@
+/*
+  Projam AI: the case study as a visual story.
+  Condensed from Naveen's approved case study (case-studies/sources/projam-case-study.html,
+  and the earlier projam-sections.js in git history). Nothing is added: wording is shortened, facts are unchanged.
+  Pilot numbers are labelled as pilot data, never as business results.
+
+  Story shape (shared by every case study, see CaseStory.jsx):
+  challenge → approach → product → flows → system (optional) → outcome.
+  A visual is { layout, screens, crop?, ratio?, labels?, annotations?, caption? } (see mockups/Visual.jsx).
+*/
+
+// Parts of a screen to float as detail cards (fractions of the screen's width and height)
+const crops = {
+  counters: { x: 0.18, y: 0.395, w: 0.81, h: 0.23 },
+  tokens: { x: 0, y: 0.355, w: 1, h: 0.125 },
+  table: { x: 0, y: 0.5, w: 0.66, h: 0.22 },
+}
+
+export const story = {
+  challenge: {
+    statement:
+      'Requirements documents and the delivery backlog are written by different people, in different tools, at different times. By sprint two they no longer agree, and nobody can trace a task back to the business need behind it.',
+    compare: {
+      before: {
+        label: 'Today',
+        items: [
+          'BRD, FRD and NFR written by hand over several weeks',
+          'Epics, stories and tasks re-typed into Jira / ADO',
+          'No traceability from task back to business goal',
+        ],
+      },
+      after: {
+        label: 'With Projam',
+        items: [
+          'A guided intake captures the context once',
+          'AI drafts all eight artifact types, linked by code',
+          'The approved backlog goes to Azure DevOps in one click',
+        ],
+      },
+    },
+    users: [
+      { code: 'PM', title: 'Delivery manager', line: '“Get me from idea to sprint 1.”' },
+      { code: 'BA', title: 'Business analyst', line: '“I need to trust every line.”' },
+      { code: 'TL', title: 'Tech lead', line: '“Do these tasks match our stack?”' },
+    ],
+    visual: {
+      layout: 'detail',
+      screens: ['overview'],
+      crop: crops.counters,
+      caption: 'The whole chain on one screen, from 8 business requirements to 351 tasks (pilot project)',
+    },
+  },
+
+  approach: [
+    {
+      title: 'Context in, quality out',
+      text: 'The output is only as good as the brief, so intake is a structured wizard (domain, stakeholders, compliance, tech stack), not a single prompt box.',
+      visual: { layout: 'browser', screens: ['intake'], ratio: 4 / 3, annotations: ['Business and Technical tracks', 'Visible limits on every field', 'AI drafts the first description'] },
+    },
+    {
+      title: 'Show the machine’s work',
+      text: 'Counts per layer, status, token usage, cost and time are all on screen. Nothing the agent does is hidden.',
+      visual: { layout: 'detail', screens: ['engine'], crop: crops.tokens, ratio: 16 / 11, caption: 'Token usage analytics for every layer' },
+    },
+    {
+      title: 'AI drafts, people approve',
+      text: 'Every item carries a status and can be edited, regenerated or duplicated on its own. Only approved work is published.',
+      visual: { layout: 'detail', screens: ['engine'], crop: crops.table, ratio: 16 / 11, caption: 'Stable codes, priority and approval status on every row' },
+    },
+  ],
+
+  product: [
+    {
+      title: 'The requirements engine',
+      text: 'Generation controls, cascade regeneration, cost analytics and the review table, side by side on one page.',
+      visual: {
+        layout: 'browser',
+        screens: ['engine'],
+        ratio: 1400 / 1150,
+        annotations: ['Generate all, or one layer', 'Cascade from BRD, FRD or Epics', 'Token usage per layer', 'Publish to ADO'],
+      },
+    },
+    {
+      title: 'Project overview',
+      text: 'The chain as eight counters, then an Integration Hub that shows “Ready” before anyone can export.',
+      visual: { layout: 'browsers', screens: ['overview', 'hub'], annotations: ['Counters in generation order', 'Ready before Export', 'Technical context on show'] },
+    },
+    {
+      title: 'Out to the tools teams already use',
+      text: 'Azure DevOps sync is live. Jira, GitHub Issues and Slack are designed and marked “Coming soon”.',
+      visual: { layout: 'browser', screens: ['integrations'] },
+    },
+    {
+      title: 'Portfolio view',
+      text: 'A dashboard for revenue, margin, delivery and AI-recommended actions (sample data), and project cards that show their chain as a mini bar.',
+      visual: { layout: 'browsers', screens: ['dashboard', 'projects'] },
+    },
+  ],
+
+  flows: [
+    {
+      title: 'Intake, generate, refine, deliver',
+      visual: {
+        layout: 'sequence',
+        screens: ['intake', 'engine', 'overview', 'integrations'],
+        labels: ['Capture context once', 'Generate all layers, or one', 'Review and approve', 'Publish to Azure DevOps'],
+      },
+    },
+    {
+      title: 'The requirements chain',
+      note: 'The project context comes from people. Every layer after it is generated by AI, and each item keeps its parent.',
+      steps: ['BRD', 'FRD', 'NFR', 'ADR', 'Epics', 'Features', 'Stories', 'Tasks'],
+    },
+  ],
+
+  system: {
+    title: 'Platform',
+    text: 'The navigation was designed for the full product from day one (six groups, 20+ destinations), so new modules slot in without reshuffling.',
+    cards: [
+      { label: 'Multi-tenant', text: 'Sign-in starts with an organisation identifier; each tenant gets its own subdomain.' },
+      { label: 'Enterprise sign-in', text: 'SSO/SAML and OAuth 2.0 with MFA. No passwords stored in the app.' },
+      { label: 'Governance', text: 'Security, users & groups and audit logs have their own admin section.' },
+    ],
+    note: 'How the platform is set up. These describe the product, not results.',
+  },
+
+  outcome: {
+    statement:
+      'One flow from a project brief to a linked, approved backlog in the team’s delivery tool. Phase one ships the AI core; the rest of the product is in place and labelled coming soon.',
+    stats: {
+      label: 'Pilot project data · Smart Hospital Management System',
+      items: [
+        { value: '507', label: 'requirements in one run' },
+        { value: '422K', label: 'tokens used' },
+        { value: '$2.85', label: 'estimated AI cost' },
+        { value: '~61 min', label: 'total generation time' },
+      ],
+      note: 'Pilot data: 1,380+ requirements across 4 pilot projects.',
+    },
+    learnings: [
+      {
+        title: 'Design the model before the screens',
+        text: 'Once the eight-layer chain was clear, every screen became a view of it: counters, cascade, table, export.',
+      },
+      {
+        title: 'Transparency builds trust in AI',
+        text: 'Showing tokens, cost, time and status made the agent feel like a tool people could audit, not a black box.',
+      },
+      {
+        title: 'Ship the core, show the roadmap',
+        text: 'A complete navigation with honest “coming soon” states let the AI engine launch first without the product feeling unfinished.',
+      },
+    ],
+  },
+}

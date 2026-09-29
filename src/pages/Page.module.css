@@ -1,0 +1,26 @@
+/* Shared layout for inner pages (Work, Case study, 404) */
+.page {
+  display: grid;
+  gap: var(--space-7);
+  padding-block: var(--space-8) var(--space-section);
+}
+
+.archive {
+  display: grid;
+  gap: var(--space-5);
+  padding-top: var(--space-7);
+}
+
+.pocList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  list-style: none;
+  padding: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.pocList li {
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-text-muted);
+}

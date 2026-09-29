@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Naveen Peddi · Senior UI/UX &amp; Product Designer</title>
+    <meta name="description" content="Naveen Peddi is a UI/UX and product designer in Hyderabad, India, designing web and mobile products across enterprise SaaS, AI, EdTech, HealthTech and cybersecurity." />
+    <meta name="theme-color" content="#0e0f12" />
+    <meta name="color-scheme" content="dark light" />
+    <!-- Pick the theme before the page paints, so it never flashes the wrong one:
+         the visitor's saved choice, otherwise their device setting. See src/lib/theme.js. -->
+    <script>
+      (function () {
+        var theme
+        try { theme = localStorage.getItem('theme') } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.dataset.theme = theme
+        var meta = document.querySelector('meta[name="theme-color"]')
+        if (meta) meta.content = theme === 'light' ? '#f4f2ee' : '#0e0f12'
+      })()
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Share previews (LinkedIn, X, WhatsApp). The image is added in Stage 8. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Naveen Peddi · Senior UI/UX &amp; Product Designer" />
+    <meta property="og:description" content="I design clarity into complex software. UI/UX and product design across enterprise SaaS, AI, EdTech, HealthTech and cybersecurity." />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
