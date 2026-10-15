@@ -4,6 +4,7 @@ import { X } from 'lucide-react'
 import { mainNav } from '../../data/navigation'
 import { profile } from '../../data/profile'
 import { duration, ease, stagger } from '../../lib/motion'
+import { pauseSmoothScroll } from '../../lib/smoothScroll'
 import { NavItem } from './NavItem'
 import styles from './MobileMenu.module.css'
 
@@ -22,6 +23,7 @@ export function MobileMenu({ open, activeId, onClose, onNavigate }) {
     const panel = panelRef.current
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    pauseSmoothScroll(true)
     panel?.querySelector('a, button')?.focus()
 
     const onKeyDown = (event) => {
@@ -43,6 +45,7 @@ export function MobileMenu({ open, activeId, onClose, onNavigate }) {
     document.addEventListener('keydown', onKeyDown)
     return () => {
       document.body.style.overflow = previousOverflow
+      pauseSmoothScroll(false)
       document.removeEventListener('keydown', onKeyDown)
     }
   }, [open, onClose])
@@ -53,6 +56,7 @@ export function MobileMenu({ open, activeId, onClose, onNavigate }) {
         <motion.div
           ref={panelRef}
           id="mobile-menu"
+          data-lenis-prevent
           className={styles.panel}
           role="dialog"
           aria-modal="true"

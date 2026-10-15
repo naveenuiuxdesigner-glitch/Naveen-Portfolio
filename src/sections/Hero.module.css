@@ -78,7 +78,7 @@
   display: inline-block;
 }
 
-/* Senior UI/UX & Product Designer */
+/* UI/UX & Product Designer */
 .role {
   font-family: var(--font-display);
   font-size: var(--text-xl);
@@ -171,78 +171,11 @@
   opacity: 1;
 }
 
-/* ---------- Three real screens, laid out like a desk of work ---------- */
-/* Positions are in % of the showcase, so the composition scales from phone to desktop */
-.showcase {
-  position: relative;
-  aspect-ratio: 5 / 4;
+/* ---------- The particle initials (see ParticleMark) ---------- */
+.markSlot {
   width: 100%;
   max-width: 40rem;
   justify-self: center;
+  align-self: center;
 }
 
-.card {
-  position: absolute;
-}
-
-.cardBack {
-  top: 0;
-  right: 0;
-  width: 80%;
-}
-
-.cardLow {
-  top: 42%;
-  left: 0;
-  width: 60%;
-}
-
-.cardFront {
-  top: 16%;
-  right: 6%;
-  width: 25%;
-}
-
-/* Drifts a few px with the cursor. Nearer cards (bigger --depth) drift more. */
-.parallax {
-  transform: translate3d(calc(var(--px, 0) * var(--depth, 0px)), calc(var(--py, 0) * var(--depth, 0px)), 0);
-  transition: transform 900ms var(--ease-out);
-}
-
-.cardLink {
-  display: grid;
-  gap: var(--space-2);
-  color: var(--color-text-muted);
-  text-decoration: none;
-}
-
-.cardScreen {
-  display: block;
-  transition: transform 450ms var(--ease-out);
-}
-
-/* The screens are pictures here; the whole card is the link */
-.cardScreen > * {
-  pointer-events: none;
-}
-
-@media (hover: hover) {
-  .cardLink:hover .cardScreen {
-    transform: translateY(-6px);
-  }
-
-}
-
-.cardLink:focus-visible {
-  outline-offset: 6px;
-  border-radius: var(--radius-md);
-}
-
-.showcaseCaption {
-  position: absolute;
-  left: 0;
-  bottom: calc(var(--space-5) * -1);
-  font-family: var(--font-label);
-  font-size: var(--text-xs);
-  color: var(--color-text-subtle);
-}

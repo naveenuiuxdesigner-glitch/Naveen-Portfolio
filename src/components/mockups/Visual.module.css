@@ -26,6 +26,17 @@
   margin-inline: auto;
 }
 
+/* Large: full-width heroes and final-UI galleries */
+.large .browser,
+.large .stack,
+.large .detailWrap {
+  max-width: none;
+}
+
+.large .phones {
+  max-width: calc(var(--count) * 20rem);
+}
+
 /* ---------- Two browsers, overlapping ---------- */
 .browsers {
   display: grid;
@@ -255,6 +266,7 @@
   justify-content: center;
   border: 0;
   border-radius: 0;
+  background: none; /* the card around it draws the backdrop */
 }
 
 .compact .browser,

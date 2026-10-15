@@ -62,12 +62,12 @@ export const story = {
     {
       title: 'Mandatory, but manageable',
       text: 'Compliance modules like ISO 42001 are tagged “Mandatory”, kept short (about 30 minutes) and always one click from “Continue learning”.',
-      visual: { layout: 'detail', screens: ['description'], crop: { x: 0.19, y: 0.42, w: 0.62, h: 0.4 }, caption: 'A mandatory 30-minute module, with a scored final assessment' },
+      visual: { layout: 'detail', screens: ['description'], crop: { x: 0.19, y: 0.42, w: 0.62, h: 0.4 }, caption: 'A mandatory 30-minute module with a scored assessment' },
     },
     {
       title: 'Progress is always visible',
       text: 'Percent complete, items done, time spent and resume position show up on the home page, the player and the progress report.',
-      visual: { layout: 'detail', screens: ['player'], crop: crops.nowLearning, ratio: 16 / 11, caption: 'Items, quiz, time spent and progress in one band' },
+      visual: { layout: 'detail', screens: ['player'], crop: crops.nowLearning, ratio: 16 / 11, caption: 'Items, quiz, time and progress in one band' },
     },
     {
       title: 'Learning is social',
@@ -108,7 +108,7 @@ export const story = {
     {
       title: 'Progress & reports',
       text: 'Each learner gets their own report: enrolled, completed, in progress, not started and total time, then a searchable course table.',
-      visual: { layout: 'detail', screens: ['progress'], crop: crops.progressTable, caption: 'Progress bar, lessons done, time spent and quiz result per course' },
+      visual: { layout: 'detail', screens: ['progress'], crop: crops.progressTable, caption: 'Progress, lessons, time and quiz result per course' },
     },
     {
       title: 'Gamification & community',

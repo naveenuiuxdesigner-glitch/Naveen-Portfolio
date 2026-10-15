@@ -48,10 +48,10 @@ const breakpoints = [
 ]
 
 const motionTokens = [
-  { token: '--duration-fast', value: '150ms', use: 'Color changes on hover' },
+  { token: '--duration-fast', value: '200ms', use: 'Color changes on hover' },
   { token: '--duration-base', value: '250ms', use: 'Hover movement, menu open' },
   { token: '--duration-slow', value: '400ms', use: 'Header hide and show' },
-  { token: '--duration-slower', value: '700ms', use: 'Text and section reveals' },
+  { token: '--duration-slower', value: '600ms', use: 'Text and section reveals' },
   { token: '--ease-out', value: 'cubic-bezier(0.22, 1, 0.36, 1)', use: 'Quick start, gentle stop. No bounce.' },
 ]
 

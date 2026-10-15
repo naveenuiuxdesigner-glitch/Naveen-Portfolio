@@ -25,6 +25,11 @@ html {
   html {
     scroll-behavior: smooth;
   }
+
+  /* Lenis does the smoothing when it's running (see lib/smoothScroll.js); two kinds at once would fight */
+  html.lenis {
+    scroll-behavior: auto;
+  }
 }
 
 body {

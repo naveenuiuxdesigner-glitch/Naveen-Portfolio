@@ -2,8 +2,8 @@
   SecuFusion: the case study as a visual story.
   Condensed from Naveen's approved content (./secufusion-sections.js, and the original text in
   case-studies/sources/secufusion-text.txt). Nothing is added: wording is shortened, facts are unchanged.
-  A personal project: every screen is a concept mockup with sample data. The competitive analysis is
-  grounding, not user research, and no user validation or result is claimed.
+  Client work at Motivity Labs, under NDA: every screen is recreated with sample data (see secufusion.js).
+  The competitive analysis is grounding, not user research, and no user validation or result is claimed.
 
   Story shape (shared by every case study, see CaseStory.jsx):
   challenge → approach → product → flows → system (optional) → outcome.
@@ -51,7 +51,7 @@ export const story = {
     visual: {
       layout: 'stack',
       screens: ['dashMaster', 'dashMssp', 'dashEnterprise'],
-      caption: 'One product, three tiers of admin (concept mockups, sample data)',
+      caption: 'One product, three tiers of admin',
     },
     usersLabel: 'Personas from role responsibilities, not interviews',
     users: [
@@ -64,7 +64,7 @@ export const story = {
   approach: [
     {
       title: 'Reuse what admins already know',
-      text: 'With no users to interview, the design reused category conventions: severity-first triage (CrowdStrike, Defender) and rule-based policy builders (Zscaler, Netskope).',
+      text: 'Without user interviews, the design reused category conventions: severity-first triage (CrowdStrike, Defender) and rule-based policy builders (Zscaler, Netskope).',
       visual: { layout: 'detail', screens: ['event'], crop: crops.severity, ratio: ratio.event, caption: 'Severity leads, then who, what and the action' },
     },
     {
@@ -175,14 +175,14 @@ export const story = {
     statement:
       'Enterprise security is inherently complex. The goal was never to hide that; it was to give every admin, at every tier, exactly the layer of it they need to act on, and nothing else.',
     stats: {
-      label: 'Scope of the concept',
+      label: 'Scope of the work',
       items: [
         { value: '3', label: 'tenant tiers to design for' },
         { value: '3', label: 'policy categories' },
         { value: '12', label: 'core product modules' },
         { value: '26', label: 'key screens designed' },
       ],
-      note: 'A personal case study: the scope of the concept, not results.',
+      note: 'The scope of the work, not results.',
     },
     cardsLabel: 'Grounding, not user research',
     cards: [
@@ -196,9 +196,9 @@ export const story = {
       },
       {
         label: 'Named assumptions',
-        text: 'Personas from role responsibilities, not interviews. Priority order (risk > volume) assumed, not tested. Flagged for validation in a real engagement.',
+        text: 'Personas from role responsibilities, not interviews. Priority order (risk > volume) assumed, not tested. Flagged for validation with real users.',
       },
     ],
-    cardsNote: 'There was no live user base, so nothing here claims user validation, and every number in the mockups is sample data.',
+    cardsNote: 'Nothing here claims user validation, and every number in the screens is sample data.',
   },
 }

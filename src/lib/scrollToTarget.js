@@ -1,3 +1,5 @@
+import { smoothScrollTo } from './smoothScroll'
+
 /*
   Scrolls to the element with this id (below the sticky header) and moves keyboard focus there,
   so screen-reader users land in the same place. Smooth unless the visitor prefers reduced motion.
@@ -8,7 +10,9 @@ export function scrollToTarget(id) {
   if (!target) return false
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
+  if (reduceMotion || !smoothScrollTo(target)) {
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
+  }
   if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1')
   target.focus({ preventScroll: true })
   return true

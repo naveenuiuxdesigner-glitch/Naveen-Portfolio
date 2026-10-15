@@ -1,32 +1,34 @@
 import { Fragment, useRef } from 'react'
-import { Link } from 'react-router'
 import { motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
 import { profile } from '../data/profile'
-import { getProject } from '../data/projects'
+import { projects } from '../data/projects'
 import { duration, ease } from '../lib/motion'
 import { usePointerVars } from '../hooks/usePointerVars'
 import { Container } from '../components/ui/Container'
 import { Button } from '../components/ui/Button'
 import { RevealGroup, RevealItem } from '../components/motion/Reveal'
-import { BrowserFrame, PhoneFrame } from '../components/mockups/Devices'
+import { Parallax } from '../components/motion/Parallax'
+import { ParticleMark } from '../components/motion/ParticleMark'
+import markStyles from '../components/motion/ParticleMark.module.css'
 import styles from './Hero.module.css'
 
 // The kinds of products you design, from your CV's domain experience
 const domains = ['Enterprise SaaS', 'AI products', 'EdTech', 'HealthTech', 'Cybersecurity']
 
-// Real screens from real case studies, laid out like a desk of work in progress.
-// depth: how far each one drifts with the cursor (px). Nearer ones move more.
-const showcase = [
-  { slug: 'projam-ai', screen: 'overview', className: 'cardBack', depth: 6 },
-  { slug: 'learnopedia', screen: 'overview', className: 'cardLow', depth: 10 },
-  { slug: 'sampatee', screen: 'home', className: 'cardFront', depth: 16 },
+// Facts that float around the particle initials, all from the CV and the work list.
+// optional: hidden on phones, where there's room for two
+const chips = [
+  { text: profile.role, style: { top: '6%', left: '4%' }, optional: true },
+  { text: `${profile.experience} experience`, style: { top: '2%', right: '6%' }, accent: true },
+  { text: `${projects.length} case studies`, style: { bottom: '8%', right: '2%' } },
+  { text: profile.location, style: { bottom: '3%', left: '10%' }, optional: true },
 ]
 
 // The name rises out of a mask, word by word
 const wordVariants = {
   hidden: { y: '105%' },
-  visible: { y: '0%', transition: { duration: duration.slower + 0.2, ease: ease.out } },
+  visible: { y: '0%', transition: { duration: duration.slower, ease: ease.out } },
 }
 
 // 1 · Home: who you are, what you do and what you design, in one screen
@@ -85,7 +87,7 @@ export function Hero() {
           </RevealItem>
         </RevealGroup>
 
-        <HeroShowcase />
+        <HeroMark />
 
         <RevealGroup onLoad delay={0.7} as="ul" className={styles.domains} aria-label="Products I design">
           {domains.map((domain) => (
@@ -99,34 +101,17 @@ export function Hero() {
   )
 }
 
-// Three real product screens. Each one opens its case study.
-function HeroShowcase() {
+// The signature visual: particles that gather into the initials, with a few facts floating around them
+function HeroMark() {
   return (
-    <div className={styles.showcase}>
-      {showcase.map((item, index) => {
-        const project = getProject(item.slug)
-        const screen = project?.screens[item.screen]
-        if (!screen) return null
-        const Frame = screen.wide ? BrowserFrame : PhoneFrame
-        return (
-          <motion.div
-            key={item.slug}
-            className={`${styles.card} ${styles[item.className]}`}
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: duration.slower + 0.2, ease: ease.out, delay: 0.45 + index * 0.12 }}
-          >
-            <div className={styles.parallax} style={{ '--depth': `${item.depth}px` }}>
-              <Link to={`/work/${item.slug}`} className={styles.cardLink} aria-label={`${project.title} case study`}>
-                <span className={styles.cardScreen}>
-                  <Frame screen={screen} eager={index === 0} />
-                </span>
-              </Link>
-            </div>
-          </motion.div>
-        )
-      })}
-      <p className={styles.showcaseCaption}>Real screens · Projam AI, Learnopedia, SAMpatee</p>
-    </div>
+    <Parallax top distance={40} className={styles.markSlot}>
+      <ParticleMark text="NP" label={`${profile.name}, ${profile.role}`}>
+        {chips.map((chip) => (
+          <span key={chip.text} className={[markStyles.chip, chip.accent && markStyles.chipAccent, chip.optional && markStyles.chipOptional].filter(Boolean).join(' ')} style={chip.style}>
+            {chip.text}
+          </span>
+        ))}
+      </ParticleMark>
+    </Parallax>
   )
 }

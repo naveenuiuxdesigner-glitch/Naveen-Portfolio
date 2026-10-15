@@ -33,7 +33,8 @@
   color: var(--color-text);
 }
 
-.count {
+.count,
+.note {
   color: var(--color-text-subtle);
 }
 

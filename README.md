@@ -14,7 +14,7 @@ npm run dev      # start the site at http://localhost:5173
 Other commands:
 
 ```bash
-npm run build    # make the final, fast version of the site in the dist/ folder
+npm run build    # make the final, fast version of the site in the dist/ folder (each page is pre-built as HTML)
 npm run preview  # look at that final version locally
 npm run lint     # check the code for mistakes
 ```
@@ -36,3 +36,13 @@ npm run lint     # check the code for mistakes
 | `public/` | Files served as-is: favicon, résumé PDF, images. |
 
 Visit `/foundation` to see the design system as a live page.
+
+## Adding screenshots
+
+Put new `.webp` screens in `public/images/work/<project>/`, then make the smaller copies phones download:
+
+```bash
+python scripts/image-sizes.py   # needs Pillow once: python -m pip install pillow
+```
+
+A screen without smaller copies still works; it just loads at full size.

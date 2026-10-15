@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 
 /*
-  Counts a number up from 0 when it scrolls into view, once, in about a second.
+  Counts a number up from 0 when it scrolls into view, once, in 600ms.
   The final text is exactly the approved value (e.g. "507", "$2.85", "~61 min", "90%").
   Screen readers always get the final value; the counting digits are hidden from them.
   With reduced motion, or for values that aren't a plain number (e.g. "× 1.2"), the value just shows.
+  The pre-rendered HTML (and the first render in the browser) shows the final value;
+  counting starts once the page is running.
 */
 const PATTERN = /^([^\d×]*?)(\d[\d,]*(?:\.\d+)?)(.*)$/
-const DURATION = 1100
-
-const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const DURATION = 600
 
 function parse(value) {
   const match = String(value).match(PATTERN)
@@ -32,14 +32,20 @@ function format(parts, current) {
 
 export function CountUp({ value }) {
   const ref = useRef(null)
-  const parts = parse(value)
-  const animate = Boolean(parts) && typeof window !== 'undefined' && !reduceMotion() && 'IntersectionObserver' in window
-  const [text, setText] = useState(() => (animate ? format(parts, 0) : String(value)))
+  // null: just show the value (before the page starts, and when there's nothing to count)
+  const [text, setText] = useState(null)
 
   useEffect(() => {
-    if (!animate) return undefined
+    const parts = parse(value)
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const el = ref.current
+    if (!parts || reduceMotion || !el || !('IntersectionObserver' in window)) return undefined
+
     let frame = 0
+    // Already counted past (e.g. scrolled by fast): leave the value as it is
+    if (el.getBoundingClientRect().bottom < 0) return undefined
+    setText(format(parts, 0))
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
@@ -60,15 +66,11 @@ export function CountUp({ value }) {
       observer.disconnect()
       window.cancelAnimationFrame(frame)
     }
-    // Runs once per value; parts is derived from value
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animate, value])
-
-  if (!animate) return value
+  }, [value])
 
   return (
     <span ref={ref} style={{ fontVariantNumeric: 'tabular-nums' }}>
-      <span aria-hidden="true">{text}</span>
+      <span aria-hidden="true">{text ?? value}</span>
       <span className="visually-hidden">{value}</span>
     </span>
   )

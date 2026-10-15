@@ -6,12 +6,12 @@
 export const profile = {
   name: 'Naveen Peddi',
   // Positioning you asked for. Your CV headline is below as cvHeadline; job titles stay exact in experience.js.
-  role: 'Senior UI/UX & Product Designer',
+  role: 'UI/UX & Product Designer',
   cvHeadline: 'UI/UX Designer · Product Design · AI-Assisted UX',
   thesis: 'I design clarity into complex software.',
   intro:
     'I design user-centered web and mobile products, from user flows and information architecture to high-fidelity UI, prototypes and design systems.',
-  experience: '4.5 years', // From your CV. TODO: confirm (listed roles start Jul 2022)
+  experience: '4+ years', // From your CV (Oct 2026)
   location: 'Hyderabad, India',
   timezone: 'Asia/Kolkata',
   currentCompany: 'Motivity Labs',
@@ -20,7 +20,7 @@ export const profile = {
   // Phone is in your CV but left off the public site on purpose. Add it here only if you want it shown.
   phone: '',
   socials: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/peddi-naveen-89479a230' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/naveen-uiux/' },
     { label: 'Behance', href: 'https://www.behance.net/peddinaveen1' },
   ],
 }

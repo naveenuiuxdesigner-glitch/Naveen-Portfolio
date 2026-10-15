@@ -7,8 +7,8 @@ import { duration, ease } from '../../lib/motion'
 import styles from './CaseStory.module.css'
 
 /*
-  The parts of a case-study story (challenge, approach…). Which parts a project has: see parts.js.
-  Screens do most of the explaining; text stays to a sentence or two.
+  The parts of a case-study story (problem, key screens…). Which parts a project has: see parts.js.
+  Screens lead, at full width; the case-study text, personas, cards and learnings sit alongside them in full.
 */
 const fade = {
   initial: { opacity: 0, y: 14 },
@@ -34,13 +34,13 @@ export function StoryContent({ part, story, screenMap, onOpen }) {
   const shared = { screenMap, onOpen }
   switch (part.id) {
     case 'challenge':
-      return <Challenge data={story.challenge} {...shared} />
+      return <Problem data={story.challenge} {...shared} />
     case 'approach':
-      return <Approach items={story.approach} {...shared} />
-    case 'product':
-      return <Product items={story.product} {...shared} />
+      return <Features items={story.approach} numbered {...shared} />
     case 'flows':
-      return <Flows items={story.flows} {...shared} />
+      return <Flows compare={story.challenge?.compare} items={story.flows} {...shared} />
+    case 'product':
+      return <Features items={story.product} {...shared} />
     case 'system':
       return <System data={story.system} {...shared} />
     case 'outcome':
@@ -50,6 +50,9 @@ export function StoryContent({ part, story, screenMap, onOpen }) {
   }
 }
 
+/* ---------- Small pieces ---------- */
+
+// The part's point, set large: one sentence
 function Statement({ children }) {
   return (
     <motion.p className={styles.statement} {...fade}>
@@ -58,101 +61,109 @@ function Statement({ children }) {
   )
 }
 
-function Challenge({ data, screenMap, onOpen }) {
+/* ---------- Parts ---------- */
+
+function Problem({ data, screenMap, onOpen }) {
   return (
     <div className={styles.stack}>
       <Statement>{data.statement}</Statement>
 
-      {data.compare && (
-        <Reveal className={styles.compare}>
-          {[data.compare.before, data.compare.after].map((side, index) => (
-            <div key={side.label} className={`${styles.compareSide} ${index === 1 ? styles.compareAfter : ''}`}>
-              <p className={styles.compareLabel}>{side.label}</p>
-              <ul>
-                {side.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </Reveal>
-      )}
-
       {data.visual && (
         <Reveal>
-          <Visual visual={data.visual} screenMap={screenMap} onOpen={onOpen} />
+          <Visual visual={data.visual} screenMap={screenMap} onOpen={onOpen} large />
         </Reveal>
-      )}
+        )}
 
       {data.users?.length > 0 && (
-        <Reveal className={styles.users}>
-          <p className={styles.miniLabel}>{data.usersLabel ?? 'Designed for'}</p>
-          <ul>
-            {data.users.map((user) => (
-              <li key={user.title}>
-                {user.code && <span className={styles.userCode}>{user.code}</span>}
-                <span className={styles.userText}>
-                  <strong>{user.title}</strong>
-                  {user.line && <span>{user.line}</span>}
-                </span>
-              </li>
-            ))}
-          </ul>
+        <Reveal>
+          <Users label={data.usersLabel} users={data.users} />
         </Reveal>
       )}
     </div>
   )
 }
 
-function Approach({ items, screenMap, onOpen }) {
+function Users({ label, users }) {
   return (
-    <ol className={styles.decisions}>
-      {items.map((item, index) => (
-        <li key={item.title} className={styles.decision}>
-          <Reveal className={styles.decisionText}>
-            <span className={styles.decisionNumber}>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{item.title}</h3>
-            {item.text && <p>{item.text}</p>}
-          </Reveal>
-          {item.visual && (
-            <Reveal className={styles.decisionVisual} delay={0.08}>
-              <Visual visual={item.visual} screenMap={screenMap} onOpen={onOpen} />
-            </Reveal>
-          )}
-        </li>
-      ))}
-    </ol>
+    <div className={styles.users}>
+      <p className={styles.miniLabel}>{label ?? 'Designed for'}</p>
+      <ul>
+        {users.map((user) => (
+          <li key={user.title}>
+            {user.code && <span className={styles.userCode}>{user.code}</span>}
+            <span className={styles.userText}>
+              <strong>{user.title}</strong>
+              {user.line && <span>{user.line}</span>}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
-function Product({ items, screenMap, onOpen }) {
+// Key screens (numbered) and Final UI: a short heading and line, then a large visual
+function Features({ items, numbered = false, screenMap, onOpen }) {
+  const List = numbered ? 'ol' : 'div'
+  const Item = numbered ? 'li' : 'article'
   return (
-    <div className={styles.showcase}>
-      {items.map((item) => (
-        <article key={item.title} className={styles.feature}>
+    <List className={styles.showcase}>
+      {items.map((item, index) => (
+        <Item key={item.title} className={styles.feature}>
           <Reveal className={styles.featureHead}>
-            <h3>{item.title}</h3>
-            {item.text && <p>{item.text}</p>}
+            <h3>
+              {numbered && <span className={styles.featureNumber}>{String(index + 1).padStart(2, '0')}</span>}
+              {item.title}
+            </h3>
+            {item.text && (
+              <div className={styles.featureText}>
+                <p>{item.text}</p>
+              </div>
+            )}
           </Reveal>
           {item.visual && (
             <Reveal delay={0.06}>
-              <Visual visual={item.visual} screenMap={screenMap} onOpen={onOpen} />
+              <Visual visual={item.visual} screenMap={screenMap} onOpen={onOpen} large />
             </Reveal>
-          )}
-        </article>
+        )}
+        </Item>
       ))}
-    </div>
+    </List>
   )
 }
 
-function Flows({ items, screenMap, onOpen }) {
+// "Before · As-is", but just "Before" when the label already says it
+const sideLabel = (label, side) => (label.toLowerCase() === side.toLowerCase() ? label : `${side} · ${label}`)
+
+function Flows({ compare, items = [], screenMap, onOpen }) {
   return (
     <div className={styles.showcase}>
+      {compare && (
+        <div className={styles.feature}>
+          <Reveal className={styles.compare}>
+            {[compare.before, compare.after].map((side, index) => (
+              <div key={side.label} className={`${styles.compareSide} ${index === 1 ? styles.compareAfter : ''}`}>
+                <p className={styles.compareLabel}>{sideLabel(side.label, index === 0 ? 'Before' : 'After')}</p>
+                <ul>
+                  {side.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </Reveal>
+        </div>
+      )}
+
       {items.map((flow) => (
-        <article key={flow.title} className={styles.flow}>
+        <article key={flow.title} className={styles.feature}>
           <Reveal className={styles.featureHead}>
             <h3>{flow.title}</h3>
-            {flow.note && <p>{flow.note}</p>}
+            {flow.note && (
+              <div className={styles.featureText}>
+                <p>{flow.note}</p>
+              </div>
+            )}
           </Reveal>
           {flow.steps && (
             <Reveal as="ol" className={styles.chain}>
@@ -169,7 +180,7 @@ function Flows({ items, screenMap, onOpen }) {
           )}
           {flow.visual && (
             <Reveal delay={0.06}>
-              <Visual visual={flow.visual} screenMap={screenMap} onOpen={onOpen} />
+              <Visual visual={flow.visual} screenMap={screenMap} onOpen={onOpen} large />
             </Reveal>
           )}
         </article>
@@ -183,6 +194,12 @@ function System({ data, screenMap, onOpen }) {
     <div className={styles.stack}>
       {data.text && <Statement>{data.text}</Statement>}
 
+      {data.cards?.length > 0 && (
+        <Reveal>
+          <Cards cards={data.cards} />
+        </Reveal>
+      )}
+
       {data.swatches?.length > 0 && (
         <Reveal as="ul" className={styles.swatches}>
           {data.swatches.map((swatch) => (
@@ -195,25 +212,27 @@ function System({ data, screenMap, onOpen }) {
         </Reveal>
       )}
 
-      {data.cards?.length > 0 && (
-        <Reveal as="ul" className={styles.cards}>
-          {data.cards.map((card) => (
-            <li key={card.label}>
-              <p className={styles.cardLabel}>{card.label}</p>
-              <p>{card.text}</p>
-            </li>
-          ))}
-        </Reveal>
-      )}
-
       {data.visual && (
         <Reveal>
-          <Visual visual={data.visual} screenMap={screenMap} onOpen={onOpen} />
+          <Visual visual={data.visual} screenMap={screenMap} onOpen={onOpen} large />
         </Reveal>
-      )}
+        )}
 
       {data.note && <p className={styles.note}>{data.note}</p>}
     </div>
+  )
+}
+
+function Cards({ cards }) {
+  return (
+    <ul className={styles.cards}>
+      {cards.map((card) => (
+        <li key={card.label}>
+          <p className={styles.cardLabel}>{card.label}</p>
+          <p>{card.text}</p>
+        </li>
+      ))}
+    </ul>
   )
 }
 
@@ -222,6 +241,7 @@ function Outcome({ data }) {
     <div className={styles.stack}>
       {data.statement && <Statement>{data.statement}</Statement>}
 
+      {/* The numbers stay in view, with their note, so nothing reads as a bigger claim than it is */}
       {data.stats && (
         <Reveal className={styles.stats}>
           <p className={styles.miniLabel}>{data.stats.label}</p>
@@ -239,32 +259,28 @@ function Outcome({ data }) {
         </Reveal>
       )}
 
-      {data.cards?.length > 0 && (
-        <Reveal className={styles.outcomeCards}>
-          {data.cardsLabel && <p className={styles.miniLabel}>{data.cardsLabel}</p>}
-          <ul className={styles.cards}>
-            {data.cards.map((card) => (
-              <li key={card.label}>
-                <p className={styles.cardLabel}>{card.label}</p>
-                <p>{card.text}</p>
-              </li>
-            ))}
-          </ul>
-          {data.cardsNote && <p className={styles.note}>{data.cardsNote}</p>}
-        </Reveal>
-      )}
-
-      {data.learnings?.length > 0 && (
-        <Reveal className={styles.learnings}>
-          <p className={styles.miniLabel}>What I learned</p>
-          <ol>
-            {data.learnings.map((item) => (
-              <li key={item.title}>
-                <h3>{item.title}</h3>
-                {item.text && <p>{item.text}</p>}
-              </li>
-            ))}
-          </ol>
+      {(data.cards?.length > 0 || data.learnings?.length > 0) && (
+        <Reveal className={styles.stack}>
+          {data.cards?.length > 0 && (
+            <div className={styles.outcomeCards}>
+              {data.cardsLabel && <p className={styles.miniLabel}>{data.cardsLabel}</p>}
+              <Cards cards={data.cards} />
+              {data.cardsNote && <p className={styles.note}>{data.cardsNote}</p>}
+            </div>
+          )}
+          {data.learnings?.length > 0 && (
+            <div className={styles.learnings}>
+              <p className={styles.miniLabel}>What I learned</p>
+              <ol>
+                {data.learnings.map((item) => (
+                  <li key={item.title}>
+                    <h3>{item.title}</h3>
+                    {item.text && <p>{item.text}</p>}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
         </Reveal>
       )}
     </div>

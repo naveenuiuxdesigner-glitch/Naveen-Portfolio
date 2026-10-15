@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'reac
 import { Link, useLocation, useParams } from 'react-router'
 import { motion } from 'motion/react'
 import { ArrowLeft } from 'lucide-react'
-import { factFields, getNextProject, getProject } from '../data/projects'
+import { factFields, getNextProject, getProject, loadedStory, preloadStory } from '../data/projects'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { scrollToTarget } from '../lib/scrollToTarget'
 import { cameFromCard, supportsViewTransitions } from '../lib/cardTransition'
@@ -10,6 +10,7 @@ import { duration, ease } from '../lib/motion'
 import { Container } from '../components/ui/Container'
 import { RevealGroup, RevealItem } from '../components/motion/Reveal'
 import { Visual } from '../components/mockups/Visual'
+import { ScrollShrink } from '../components/motion/ScrollShrink'
 import { StoryContent, StoryPart } from '../components/story/CaseStory'
 import { partsFor } from '../components/story/parts'
 import { CaseSectionNav } from '../components/case-study/CaseSectionNav'
@@ -38,13 +39,16 @@ export default function CaseStudy() {
 
   // The story downloads only when a case study is opened (see loadStory in projects.js),
   // so the home page stays light. Until it arrives, the hero shows and the parts below wait.
-  const [loaded, setLoaded] = useState({ slug: null, story: null, failed: false })
+  // A pre-rendered case study already has it (see preloadStory).
+  const [loaded, setLoaded] = useState(() => ({ slug, story: loadedStory(slug), failed: false }))
   useEffect(() => {
-    if (!project) return undefined
+    if (!project || loadedStory(slug)) {
+      setLoaded((state) => (state.slug === slug && state.story ? state : { slug, story: loadedStory(slug), failed: false }))
+      return undefined
+    }
     let current = true
-    project
-      .loadStory()
-      .then((module) => current && setLoaded({ slug, story: module.story, failed: false }))
+    preloadStory(slug)
+      .then((story) => current && setLoaded({ slug, story, failed: false }))
       .catch(() => current && setLoaded({ slug, story: null, failed: true }))
     return () => {
       current = false
@@ -105,7 +109,7 @@ export default function CaseStudy() {
                 className={styles.maskInner}
                 initial={{ y: '105%' }}
                 animate={{ y: '0%' }}
-                transition={{ duration: duration.slower + 0.2, ease: ease.out }}
+                transition={{ duration: duration.slower, ease: ease.out }}
               >
                 {project.title}
               </motion.span>
@@ -135,14 +139,18 @@ export default function CaseStudy() {
       </Container>
 
       {project.heroVisual && (
+        // Full width, settling into its frame as the page scrolls. It slides in without fading,
+        // so the browser paints it (the page's largest image) straight away.
         <Container className={styles.heroVisual}>
           <motion.div
-            initial={fromCard ? false : { opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: duration.slower + 0.2, ease: ease.out, delay: 0.25 }}
+            initial={fromCard ? false : { y: 32 }}
+            animate={{ y: 0 }}
+            transition={{ duration: duration.slower, ease: ease.out, delay: 0.25 }}
             style={{ viewTransitionName: 'project-media' }}
           >
-            <Visual visual={project.heroVisual} screenMap={project.screens} onOpen={openScreen} eager />
+            <ScrollShrink>
+              <Visual visual={project.heroVisual} screenMap={project.screens} onOpen={openScreen} eager priority large />
+            </ScrollShrink>
           </motion.div>
         </Container>
       )}
@@ -167,7 +175,7 @@ export default function CaseStudy() {
       {ready && <NextProject project={next} />}
 
       {screenItems.length > 0 && (
-        <ScreenViewer items={screenItems} index={viewerIndex} onClose={closeViewer} onChange={setViewerIndex} />
+        <ScreenViewer title={project.title} items={screenItems} index={viewerIndex} onClose={closeViewer} onChange={setViewerIndex} />
       )}
     </div>
   )

@@ -19,7 +19,7 @@ const fade = {
 }
 const rise = {
   hidden: { y: '110%' },
-  visible: { y: '0%', transition: { duration: duration.slower + 0.15, ease: ease.out } },
+  visible: { y: '0%', transition: { duration: duration.slower, ease: ease.out } },
 }
 
 export function SectionHeading({ label, title, intro, as: Heading = 'h2', id }) {

@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { srcSetFor } from '../../lib/srcSet'
 import styles from './Devices.module.css'
 
 /*
@@ -15,19 +16,33 @@ const settle = {
   initial: { scale: 1.05 },
   whileInView: { scale: 1 },
   viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
 }
 
-function Screen({ screen, eager, reveal, style, className }) {
+/*
+  Smaller copies of large screenshots (made by scripts/image-sizes.py), so phones download a small image.
+  sizes: how wide the image shows on screen, so the browser can pick the right copy.
+  The defaults suit each frame; pass `sizes` when a frame shows much smaller (e.g. in a card).
+*/
+const PHONE_SIZES = '(max-width: 640px) 40vw, 20rem'
+const WIDE_SIZES = '(max-width: 768px) 90vw, 75vw' // 90vw: the page's side padding
+
+function Screen({ screen, eager, reveal, sizes, style, className }) {
   const Img = reveal ? motion.img : 'img'
+  // Without sizes (a magnified detail crop), the full image keeps it sharp
+  const srcSet = sizes ? srcSetFor(screen) : undefined
   return (
     <Img
       {...(reveal ? settle : {})}
       src={screen.src}
+      srcSet={srcSet}
+      sizes={srcSet ? sizes : undefined}
       width={screen.width}
       height={screen.height}
       alt=""
       loading={eager ? 'eager' : 'lazy'}
+      // eager='high': the page's main image, fetched before anything else
+      fetchPriority={eager === 'high' ? 'high' : undefined}
       decoding="async"
       className={className ?? styles.image}
       style={style}
@@ -52,7 +67,7 @@ function Opener({ screen, onOpen, className, children }) {
 }
 
 /* ratio: the visible window. Long pages are cropped from the top here and shown whole in the viewer. */
-export function BrowserFrame({ screen, onOpen, eager = false, reveal = false, ratio }) {
+export function BrowserFrame({ screen, onOpen, eager = false, reveal = false, ratio, sizes = WIDE_SIZES }) {
   const shape = ratio ?? Math.max(screen.width / screen.height, 16 / 10)
   return (
     <Opener screen={screen} onOpen={onOpen} className={styles.browser}>
@@ -65,18 +80,18 @@ export function BrowserFrame({ screen, onOpen, eager = false, reveal = false, ra
         <span className={styles.address} />
       </span>
       <span className={styles.viewport} style={{ aspectRatio: shape }}>
-        <Screen screen={screen} eager={eager} reveal={reveal} />
+        <Screen screen={screen} eager={eager} reveal={reveal} sizes={sizes} />
       </span>
     </Opener>
   )
 }
 
-export function PhoneFrame({ screen, onOpen, eager = false, reveal = false }) {
+export function PhoneFrame({ screen, onOpen, eager = false, reveal = false, sizes = PHONE_SIZES }) {
   return (
     <Opener screen={screen} onOpen={onOpen} className={styles.phone}>
       <span className={styles.phoneBody}>
         <span className={styles.phoneScreen}>
-          <Screen screen={screen} eager={eager} reveal={reveal} />
+          <Screen screen={screen} eager={eager} reveal={reveal} sizes={sizes} />
         </span>
       </span>
     </Opener>
@@ -112,10 +127,10 @@ export function Device({ screen, frame, ...props }) {
 }
 
 // Diagrams and strips that aren't app windows: a simple card
-export function PlainFrame({ screen, onOpen, eager = false, reveal = false }) {
+export function PlainFrame({ screen, onOpen, eager = false, reveal = false, sizes = WIDE_SIZES }) {
   return (
     <Opener screen={screen} onOpen={onOpen} className={styles.plain}>
-      <Screen screen={screen} eager={eager} reveal={reveal} />
+      <Screen screen={screen} eager={eager} reveal={reveal} sizes={sizes} />
     </Opener>
   )
 }

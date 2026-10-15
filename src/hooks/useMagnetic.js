@@ -6,7 +6,7 @@ import { useFinePointer } from './useFinePointer'
   then settles back. The pull is capped (max px) so it stays a hint, never a chase.
   Mouse and trackpad only; off for touch and reduced motion.
 */
-export function useMagnetic(ref, { enabled = true, strength = 0.22, max = 6 } = {}) {
+export function useMagnetic(ref, { enabled = true, strength = 0.15, max = 4 } = {}) {
   const fine = useFinePointer()
 
   useEffect(() => {

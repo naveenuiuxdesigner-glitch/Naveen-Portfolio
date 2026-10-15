@@ -17,11 +17,15 @@ import styles from './Visual.module.css'
 
   annotations: tiny numbered labels under the visual. caption: one short line.
   compact: the Work-list version (no labels, not clickable).
+  large: lifts the width limits, for full-width heroes and final-UI galleries.
+  priority: this visual is the page's main image; its first screen downloads before anything else.
 */
-export function Visual({ visual, screenMap, onOpen, eager = false, compact = false, className = '' }) {
+export function Visual({ visual, screenMap, onOpen, eager = false, priority = false, compact = false, large = false, className = '' }) {
   const items = (visual.screens ?? []).map((id) => ({ id, screen: screenMap[id] })).filter((item) => item.screen)
   if (items.length === 0) return null
 
+  // 'high' marks the page's main image (see Screen in Devices.jsx)
+  const eagerAt = (index) => (priority && index === 0 ? 'high' : eager)
   const open = (id) => (onOpen && !compact ? () => onOpen(id) : undefined)
   const reveal = !compact
   const layout = visual.layout ?? (items[0].screen.wide ? 'browser' : items.length > 1 ? 'phones' : 'phone')
@@ -34,7 +38,7 @@ export function Visual({ visual, screenMap, onOpen, eager = false, compact = fal
         <div className={styles.browsers}>
           {items.slice(0, 2).map(({ id, screen }, index) => (
             <div key={id} className={index === 0 ? styles.back : styles.front}>
-              <BrowserFrame screen={screen} onOpen={open(id)} eager={eager} reveal={reveal} ratio={visual.ratio} />
+              <BrowserFrame screen={screen} onOpen={open(id)} eager={eagerAt(index)} reveal={reveal} ratio={visual.ratio} />
             </div>
           ))}
         </div>
@@ -44,7 +48,7 @@ export function Visual({ visual, screenMap, onOpen, eager = false, compact = fal
       body = (
         <div className={styles.single}>
           <div className={styles.singlePhone}>
-            <PhoneFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eager} reveal={reveal} />
+            <PhoneFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eagerAt(0)} reveal={reveal} />
           </div>
           {visual.crop && (
             <div className={styles.phoneDetail}>
@@ -57,9 +61,9 @@ export function Visual({ visual, screenMap, onOpen, eager = false, compact = fal
     case 'phones':
       body = (
         <div className={styles.phones} style={{ '--count': items.length }}>
-          {items.map(({ id, screen }) => (
+          {items.map(({ id, screen }, index) => (
             <div key={id} className={styles.phoneSlot}>
-              <PhoneFrame screen={screen} onOpen={open(id)} eager={eager} reveal={reveal} />
+              <PhoneFrame screen={screen} onOpen={open(id)} eager={eagerAt(index)} reveal={reveal} />
             </div>
           ))}
         </div>
@@ -70,7 +74,7 @@ export function Visual({ visual, screenMap, onOpen, eager = false, compact = fal
         // The detail is drawn larger than it appears in the screen behind it, so it reads as a zoom
         <div className={styles.detailWrap} style={{ '--float-w': `${Math.round(Math.min(86, Math.max(52, (visual.crop?.w ?? 0.5) * 95)))}%` }}>
           <div className={styles.detailBase}>
-            <BrowserFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eager} reveal={reveal} ratio={visual.ratio} />
+            <BrowserFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eagerAt(0)} reveal={reveal} ratio={visual.ratio} />
           </div>
           <div className={styles.detailFloat}>
             <DetailCard screen={items[0].screen} crop={visual.crop} onOpen={open(items[0].id)} reveal={reveal} />
@@ -88,7 +92,7 @@ export function Visual({ visual, screenMap, onOpen, eager = false, compact = fal
                 <span className={styles.stepNumber}>{String(index + 1).padStart(2, '0')}</span>
                 {visual.labels?.[index] ?? screen.caption}
               </span>
-              <Device screen={screen} onOpen={open(id)} eager={eager} reveal={reveal} />
+              <Device screen={screen} onOpen={open(id)} eager={eagerAt(index)} reveal={reveal} />
             </li>
           ))}
         </ol>
@@ -98,9 +102,9 @@ export function Visual({ visual, screenMap, onOpen, eager = false, compact = fal
     case 'stack':
       body = (
         <div className={styles.stack}>
-          {items.map(({ id, screen }) => (
+          {items.map(({ id, screen }, index) => (
             <div key={id} className={styles.stackItem}>
-              <PlainFrame screen={screen} onOpen={open(id)} eager={eager} reveal={reveal} />
+              <PlainFrame screen={screen} onOpen={open(id)} eager={eagerAt(index)} reveal={reveal} />
             </div>
           ))}
         </div>
@@ -109,28 +113,32 @@ export function Visual({ visual, screenMap, onOpen, eager = false, compact = fal
     case 'plain':
       body = (
         <div className={styles.plainWrap}>
-          <PlainFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eager} reveal={reveal} />
+          <PlainFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eagerAt(0)} reveal={reveal} />
         </div>
       )
       break
     default:
       body = (
         <div className={styles.browser}>
-          <BrowserFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eager} reveal={reveal} ratio={visual.ratio} />
+          <BrowserFrame screen={items[0].screen} onOpen={open(items[0].id)} eager={eagerAt(0)} reveal={reveal} ratio={visual.ratio} />
         </div>
       )
   }
 
-  const classes = [styles.visual, canvas && styles.canvas, compact && styles.compact, styles[`is-${layout}`], className]
+  const classes = [styles.visual, canvas && styles.canvas, compact && styles.compact, large && styles.large, styles[`is-${layout}`], className]
     .filter(Boolean)
     .join(' ')
+
+  // A note the screens carry themselves, e.g. 'Recreated under NDA with sample data'
+  const note = items.find(({ screen }) => screen.note)?.screen.note
 
   return (
     <figure className={classes}>
       <div className={styles.stage}>{body}</div>
-      {!compact && (visual.annotations?.length > 0 || visual.caption) && (
+      {!compact && (visual.annotations?.length > 0 || visual.caption || note) && (
         <figcaption className={styles.notes}>
           {visual.caption && <span className={styles.caption}>{visual.caption}</span>}
+          {note && <span className={styles.caption}>{note}</span>}
           {visual.annotations?.length > 0 && (
             <ol className={styles.annotations}>
               {visual.annotations.map((note, index) => (

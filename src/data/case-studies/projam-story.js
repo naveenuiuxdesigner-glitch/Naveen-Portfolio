@@ -47,7 +47,7 @@ export const story = {
       layout: 'detail',
       screens: ['overview'],
       crop: crops.counters,
-      caption: 'The whole chain on one screen, from 8 business requirements to 351 tasks (pilot project)',
+      caption: 'One screen: 8 requirements to 351 tasks (pilot)',
     },
   },
 
@@ -65,7 +65,7 @@ export const story = {
     {
       title: 'AI drafts, people approve',
       text: 'Every item carries a status and can be edited, regenerated or duplicated on its own. Only approved work is published.',
-      visual: { layout: 'detail', screens: ['engine'], crop: crops.table, ratio: 16 / 11, caption: 'Stable codes, priority and approval status on every row' },
+      visual: { layout: 'detail', screens: ['engine'], crop: crops.table, ratio: 16 / 11, caption: 'Stable codes, priority and approval status per row' },
     },
   ],
 

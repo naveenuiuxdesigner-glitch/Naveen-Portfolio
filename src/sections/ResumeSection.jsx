@@ -1,6 +1,5 @@
 import { ArrowDownToLine } from 'lucide-react'
 import { resume } from '../data/resume'
-import { profile } from '../data/profile'
 import { Container } from '../components/ui/Container'
 import { Button } from '../components/ui/Button'
 import { Reveal } from '../components/motion/Reveal'
@@ -26,9 +25,11 @@ export function ResumeSection() {
                 variant="primary"
                 href={resume.fileUrl}
                 icon={ArrowDownToLine}
-                download={`${profile.name.replace(' ', '-')}-Resume.pdf`}
+                target="_blank"
+                rel="noreferrer"
               >
                 Download resume ({resume.fileLabel})
+                <span className="visually-hidden"> (opens in a new tab)</span>
               </Button>
             ) : (
               // Placeholder until the final PDF is added in src/data/resume.js

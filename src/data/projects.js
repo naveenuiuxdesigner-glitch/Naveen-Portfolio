@@ -31,7 +31,8 @@ const emptyCaseStudy = {
   tags: [],
   tagline: '', // One sentence: what the product does. Shown on the Work card and the case-study hero
   meta: [], // Industry · product type · platform, e.g. ['HealthTech', 'Patient app', 'iOS & Android']
-  screens: {}, // Real product screens, by name
+  screens: {}, // Real product screens, by name. A screen's `note` shows under it, e.g. 'Recreated under NDA with sample data'
+  screenNote: '', // The same note, shown on the Work card
   heroVisual: null, // The large visual at the top of the case study, e.g. { layout: 'phones', screens: ['home'] }
   coverVisual: null, // The Work card visual, if it should differ from the hero
 }
@@ -56,6 +57,22 @@ export const factFields = [
   { key: 'platform', label: 'Platform' },
   { key: 'scope', label: 'Scope' },
 ]
+
+/*
+  Stories already downloaded, by slug. The build fills this before pre-rendering a case study,
+  and the browser before taking over its HTML, so the whole page is there from the start.
+*/
+const stories = {}
+
+export function preloadStory(slug) {
+  const project = getProject(slug)
+  if (!project) return Promise.resolve(null)
+  return project.loadStory().then((module) => (stories[slug] = module.story))
+}
+
+export function loadedStory(slug) {
+  return stories[slug] ?? null
+}
 
 export function getProject(slug) {
   return projects.find((project) => project.slug === slug)

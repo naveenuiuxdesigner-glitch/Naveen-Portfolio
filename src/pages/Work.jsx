@@ -4,7 +4,7 @@ import { usePageMeta } from '../hooks/usePageMeta'
 import { Container } from '../components/ui/Container'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { StageNote } from '../components/ui/StageNote'
-import { ProjectList } from '../components/work/ProjectList'
+import { ProjectStack } from '../components/work/ProjectStack'
 import styles from './Page.module.css'
 
 export default function Work() {
@@ -21,7 +21,7 @@ export default function Work() {
         title="All work"
         intro="Six featured case studies, followed by an archive of proofs of concept."
       />
-      <ProjectList projects={projects} />
+      <ProjectStack projects={projects} />
 
       <section aria-labelledby="pocs-title" className={styles.archive}>
         <SectionHeading as="h2" id="pocs-title" label="Archive" title="Proofs of concept" />

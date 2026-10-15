@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowLeft, ArrowRight, X } from 'lucide-react'
 import { duration, ease } from '../../lib/motion'
+import { pauseSmoothScroll } from '../../lib/smoothScroll'
 import styles from './ScreenViewer.module.css'
 
 /*
@@ -11,7 +12,7 @@ import styles from './ScreenViewer.module.css'
   - Keyboard focus stays inside while it's open, and the page behind can't scroll
   - Tall screens scroll inside the viewer
 */
-export function ScreenViewer({ items, index, onClose, onChange }) {
+export function ScreenViewer({ title, items, index, onClose, onChange }) {
   const panelRef = useRef(null)
   const openerRef = useRef(null)
   const open = index !== null
@@ -24,10 +25,12 @@ export function ScreenViewer({ items, index, onClose, onChange }) {
     openerRef.current = document.activeElement
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    pauseSmoothScroll(true)
     panelRef.current?.querySelector('[data-autofocus]')?.focus()
 
     return () => {
       document.body.style.overflow = previousOverflow
+      pauseSmoothScroll(false)
       openerRef.current?.focus?.()
     }
   }, [open])
@@ -68,6 +71,7 @@ export function ScreenViewer({ items, index, onClose, onChange }) {
         <motion.div
           ref={panelRef}
           className={styles.viewer}
+          data-lenis-prevent
           role="dialog"
           aria-modal="true"
           aria-label={`Screen ${index + 1} of ${items.length}: ${item.screen.caption}`}
@@ -82,6 +86,7 @@ export function ScreenViewer({ items, index, onClose, onChange }) {
                 {String(index + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
               </span>
               <span>{item.screen.caption}</span>
+              {item.screen.note && <span className={styles.note}>{item.screen.note}</span>}
             </p>
             <button type="button" className={styles.button} onClick={onClose} data-autofocus>
               <span>Close</span>
@@ -102,7 +107,7 @@ export function ScreenViewer({ items, index, onClose, onChange }) {
               src={item.screen.src}
               width={item.screen.width}
               height={item.screen.height}
-              alt={`SJ Life screen: ${item.screen.caption}`}
+              alt={`${title} screen: ${item.screen.caption}`}
               className={styles.image}
             />
           </div>

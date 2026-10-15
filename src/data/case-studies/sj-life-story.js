@@ -29,7 +29,7 @@ export const story = {
     visual: {
       layout: 'phones',
       screens: ['home', 'clinic', 'shop', 'sleepDashboard'],
-      caption: 'Home, clinic booking, shop and Sleep Intelligence in one app',
+      caption: 'Home, booking, shop and Sleep Intelligence together',
     },
   },
 

@@ -11,10 +11,10 @@ export const ease = {
 }
 
 export const duration = {
-  fast: 0.15,
+  fast: 0.2,
   base: 0.25,
   slow: 0.4,
-  slower: 0.7,
+  slower: 0.6, // The longest animation on the site: everything stays between 200 and 600ms
 }
 
 // How far elements travel when they reveal. Small on purpose: subtle, never bouncy.

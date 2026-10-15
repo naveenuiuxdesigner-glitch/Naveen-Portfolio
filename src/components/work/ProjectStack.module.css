@@ -1,0 +1,227 @@
+/* ---------- Phones and tablets: cards one after another ---------- */
+.stack {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: calc(var(--radius-lg) * 1.6);
+  background:
+    radial-gradient(90% 120% at 100% 50%, color-mix(in srgb, var(--glow) 22%, transparent), transparent 65%),
+    var(--color-bg-raised);
+  box-shadow: var(--shadow-lg);
+  transform-origin: center top;
+}
+
+/* Darkens cards that sit lower in the deck */
+.shade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+}
+
+.link {
+  display: grid;
+  color: inherit;
+  text-decoration: none;
+}
+
+.info {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-5) var(--space-5);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-subtle);
+}
+
+.badge {
+  padding: 2px var(--space-2);
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-accent);
+}
+
+.title {
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: var(--tracking-display);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.meta {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.tagline {
+  max-width: 46ch;
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 2px var(--space-3);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.cta svg {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+/* The screens, on a faint dot grid, glowing in the product's colour */
+.media {
+  position: relative;
+  min-height: 18rem;
+  overflow: hidden;
+  background: radial-gradient(color-mix(in srgb, var(--color-text) 8%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px;
+  aspect-ratio: 4 / 3;
+}
+
+.mediaInner {
+  position: absolute;
+  inset: 0;
+  padding: 7% 7% 0;
+  transform: translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 6px), 0);
+  transition: transform 700ms var(--ease-out);
+}
+
+.mediaInner :global(figure) {
+  --phone-max: 15rem;
+}
+
+.note {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-4);
+  padding: 2px var(--space-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.link:focus-visible {
+  outline-offset: 6px;
+  border-radius: calc(var(--radius-lg) * 1.6);
+}
+
+@media (hover: hover) {
+  .link:hover .title {
+    color: var(--color-accent);
+  }
+
+  .link:hover .cta {
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent, #111);
+  }
+
+  .link:hover .cta svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .link:hover .mediaInner {
+    transform: translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 6px), 0) scale(1.04);
+  }
+}
+
+/* ---------- Laptops: the deck stacks as you scroll ---------- */
+@media (min-width: 900px) {
+  .stack {
+    display: block;
+  }
+
+  /* Each card pins a little lower than the one before, so their top edges show as a stack */
+  .slot {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-5) + var(--i) * 14px);
+    margin-bottom: 14vh;
+  }
+
+  .slot:last-child {
+    margin-bottom: 0;
+  }
+
+  .card {
+    height: min(calc(100vh - var(--header-height) - var(--space-8) - 5 * 14px), 40rem);
+    min-height: 30rem;
+  }
+
+  .link {
+    height: 100%;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+
+  .info {
+    align-content: center;
+    padding: var(--space-7);
+  }
+
+  .media {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+}
+
+/* Below laptops the deck doesn't stack, so cards never shrink */
+@media (max-width: 899px) {
+  .card {
+    transform: none !important;
+  }
+
+  .shade {
+    display: none;
+  }
+}

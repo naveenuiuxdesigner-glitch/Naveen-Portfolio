@@ -89,10 +89,10 @@
   /* Mirrored in src/lib/motion.js for animations written in JavaScript */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);   /* Quick start, gentle stop */
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --duration-fast: 150ms;   /* Hover colors */
+  --duration-fast: 200ms;   /* Hover colors */
   --duration-base: 250ms;   /* Hover movement, menus */
   --duration-slow: 400ms;   /* Scroll reveals */
-  --duration-slower: 700ms; /* Page-load sequence */
+  --duration-slower: 600ms; /* Page-load sequence */
 
   /* ---------- Layers ---------- */
   --z-header: 100;

@@ -153,31 +153,24 @@
 
 .heroVisual {
   width: 100%;
+  /* Wider than the text above it: the product leads */
+  max-width: calc(105rem + var(--gutter) * 2);
 }
 
-/* ---------- The story, with the sticky section list beside it on laptops ---------- */
+/* ---------- The story, full width, with the sticky section bar above it ---------- */
 .body {
   display: grid;
-  gap: var(--space-7);
+  gap: var(--space-section);
   padding-block: var(--space-section) 0;
 }
 
 .parts {
   display: grid;
-  gap: var(--space-section);
+  gap: calc(var(--space-section) * 1.5);
   min-width: 0;
 }
 
-@media (min-width: 1024px) {
-  .body {
-    grid-template-columns: 10rem minmax(0, 1fr);
-    gap: var(--space-7);
-  }
-}
-
-@media (min-width: 1440px) {
-  .body {
-    grid-template-columns: 12rem minmax(0, 1fr);
-    gap: var(--space-7);
-  }
+/* Section links land below the header and the section bar */
+.parts > section {
+  scroll-margin-top: calc(var(--header-height) + 44px + var(--space-5));
 }

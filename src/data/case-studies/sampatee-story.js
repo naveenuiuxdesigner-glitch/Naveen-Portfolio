@@ -64,7 +64,7 @@ export const story = {
     {
       title: 'SAM speaks first',
       text: 'The biggest value is SAM stepping in before the user asks: a walk nudge at 3 PM, cooling the room when heat and fatigue coincide.',
-      visual: { layout: 'phone', screens: ['recharge'], crop: crops.sources, caption: '“Body Battery 32 + Bedroom 31°C”: both sources behind the insight' },
+      visual: { layout: 'phone', screens: ['recharge'], crop: crops.sources, caption: '“Body Battery 32 + Bedroom 31°C”, both sources' },
     },
     {
       title: 'One voice bar, five states',

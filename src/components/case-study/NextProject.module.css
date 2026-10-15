@@ -75,7 +75,7 @@
   display: block;
   height: 100%;
   padding: var(--space-5) var(--space-5) 0;
-  transition: transform 700ms var(--ease-out);
+  transition: transform 600ms var(--ease-out);
 }
 
 @media (hover: hover) {

@@ -1,0 +1,80 @@
+.mark {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  touch-action: pan-y;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* A soft glow behind the letters */
+.mark::before {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent-fill) 14%, transparent), transparent);
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+/* ---------- Floating labels around the mark ---------- */
+.chip {
+  position: absolute;
+  z-index: 1;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.chipOptional {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .chipOptional {
+    display: block;
+  }
+}
+
+.chipAccent {
+  border-color: var(--color-accent-line);
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chip {
+    animation: float 7s ease-in-out infinite;
+  }
+
+  .chip:nth-of-type(2) {
+    animation-delay: -2s;
+  }
+
+  .chip:nth-of-type(3) {
+    animation-delay: -4s;
+  }
+
+  .chip:nth-of-type(4) {
+    animation-delay: -5.5s;
+  }
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
