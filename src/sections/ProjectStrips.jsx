@@ -13,13 +13,13 @@ import styles from './ProjectStrips.module.css'
   On phones the strips sit side by side and swipe sideways. Each opens its case study.
 */
 const screens = [
-  ['sampatee', 'welcome'],
+  ['sampatee', 'rooms'],
   ['limina', 'home'],
-  ['sj-life', 'signUp'],
-  ['sampatee', 'fall'],
+  ['sj-life', 'bodyHeart'],
+  ['sampatee', 'home'],
   ['limina', 'consultation'],
-  ['sj-life', 'splash'],
-  ['sampatee', 'rewards'],
+  ['sj-life', 'shop'],
+  ['sampatee', 'challenges'],
 ]
 
 export function ProjectStrips() {

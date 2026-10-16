@@ -24,6 +24,7 @@ export const sjLifeScreens = {
   sleepCheck: { src: `${base}08-sleep-health-check.webp`, width: 394, height: 852, caption: 'Sleep Health Check' },
   stopBang: { src: `${base}09-stop-bang-question-flow.webp`, width: 393, height: 852, caption: 'STOP-BANG question flow' },
   screeningResult: { src: `${base}10-screening-result.webp`, width: 370, height: 852, caption: 'Screening result' },
+  bodyHeart: { src: `${base}11-body-heart-bmi.webp`, width: 466, height: 1010, caption: 'Body & Heart, BMI score' },
 }
 
 export const sjLife = {
